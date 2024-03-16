@@ -1,0 +1,13 @@
+chesscore\Piece.class
+chesscore\Rook.class
+chesscore\Square.class
+chesscore\PieceType.class
+chesscore\King.class
+chesscore\Bishop.class
+chesscore\ChessGame.class
+chesscore\Testmain.class
+chesscore\Queen.class
+chesscore\Board.class
+chesscore\Knight.class
+chesscore\Pawn.class
+chesscore\Color.class
