@@ -19,26 +19,10 @@ const promotionDialog = document.getElementById("promotionDialog");
 const gameEndedDialog = document.getElementById("gameEndedDialog");
 const gameEndedText = document.getElementById("gameEndedText");
 
-let game = new ClassicChessGame();
+let game;
 let selectedSquare = null;
 let validTargets = [];
 let waitingForPromotion = false;
-
-render();
-
-undoButton.addEventListener("click", () => {
-  game.undoMove();
-  selectedSquare = null;
-  validTargets = [];
-  render();
-});
-
-newGameButton.addEventListener("click", () => {
-  game = new ClassicChessGame();
-  selectedSquare = null;
-  validTargets = [];
-  render();
-});
 
 function makeSquare(file, rank) {
   return { file, rank };
@@ -677,3 +661,20 @@ function showEndGameDialogIfNeeded() {
     gameEndedDialog.showModal();
   }
 }
+
+game = new ClassicChessGame();
+render();
+
+undoButton.addEventListener("click", () => {
+  game.undoMove();
+  selectedSquare = null;
+  validTargets = [];
+  render();
+});
+
+newGameButton.addEventListener("click", () => {
+  game = new ClassicChessGame();
+  selectedSquare = null;
+  validTargets = [];
+  render();
+});
