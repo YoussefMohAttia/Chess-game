@@ -1,15 +1,17 @@
 :root {
   color-scheme: light;
-  --bg: #eef0e8;
-  --panel: #f9faf6;
-  --ink: #20241c;
-  --muted: #5f6658;
-  --light-square: #eeeed2;
-  --dark-square: #769656;
-  --selected: #f7d354;
-  --move: rgba(32, 36, 28, 0.28);
-  --check: #d94b45;
-  --line: #d5d9cb;
+  --bg: #e8ece3;
+  --panel: #fbfcf8;
+  --ink: #1e241b;
+  --muted: #68705f;
+  --light-square: #f0ddb4;
+  --dark-square: #5f8f72;
+  --selected: #f4c84b;
+  --move: rgba(27, 34, 24, 0.3);
+  --capture: rgba(154, 47, 48, 0.28);
+  --check: #c84a42;
+  --line: #cdd5c4;
+  --shadow: rgba(31, 38, 27, 0.2);
 }
 
 * {
@@ -19,7 +21,9 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--bg);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.45), transparent 42%),
+    var(--bg);
   color: var(--ink);
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -32,11 +36,11 @@ button {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 20px;
+  padding: 22px;
 }
 
 .game-shell {
-  width: min(100%, 880px);
+  width: min(100%, 860px);
 }
 
 .topbar {
@@ -44,12 +48,17 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 14px;
+  margin: 0 auto 14px;
+  width: min(100%, 76vh, 720px);
+}
+
+.title-block {
+  min-width: 0;
 }
 
 h1 {
   margin: 0;
-  font-size: clamp(1.35rem, 2vw, 2rem);
+  font-size: 1.8rem;
   line-height: 1.1;
 }
 
@@ -61,6 +70,7 @@ p {
 .actions {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .actions button,
@@ -68,29 +78,37 @@ dialog button {
   border: 1px solid var(--line);
   background: var(--panel);
   color: var(--ink);
-  min-height: 40px;
-  padding: 0 14px;
+  min-height: 42px;
+  padding: 0 16px;
   border-radius: 6px;
   cursor: pointer;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75) inset;
 }
 
 .actions button:hover,
 dialog button:hover {
   border-color: #9ca88f;
+  background: #ffffff;
 }
 
-.board-wrap {
+.play-area {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 8px;
   width: min(100%, 76vh, 720px);
   margin: 0 auto;
 }
 
 .board {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: repeat(8, minmax(0, 1fr));
   width: 100%;
   aspect-ratio: 1;
-  border: 3px solid #46513a;
-  box-shadow: 0 18px 40px rgba(32, 36, 28, 0.2);
+  border: 8px solid #33432f;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 18px 42px var(--shadow);
 }
 
 .square {
@@ -98,10 +116,19 @@ dialog button:hover {
   border: 0;
   display: grid;
   place-items: center;
+  width: 100%;
+  height: 100%;
   min-width: 0;
   min-height: 0;
   padding: 0;
+  overflow: hidden;
   cursor: pointer;
+}
+
+.square:focus-visible {
+  outline: 3px solid #20241c;
+  outline-offset: -3px;
+  z-index: 2;
 }
 
 .square.light {
@@ -114,6 +141,7 @@ dialog button:hover {
 
 .square.selected {
   background: var(--selected);
+  box-shadow: inset 0 0 0 4px rgba(32, 36, 28, 0.18);
 }
 
 .square.check {
@@ -127,22 +155,51 @@ dialog button:hover {
   border-radius: 50%;
   background: var(--move);
   position: absolute;
+  z-index: 1;
 }
 
 .piece {
+  position: absolute;
+  inset: 9%;
   width: 82%;
   height: 82%;
   object-fit: contain;
   pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 4px 3px rgba(24, 30, 21, 0.22));
 }
 
 .coord {
   position: absolute;
-  left: 5px;
-  top: 4px;
-  font-size: clamp(0.55rem, 1.4vw, 0.82rem);
+  left: 6px;
+  top: 5px;
+  font-size: 0.72rem;
   font-weight: 700;
   color: rgba(32, 36, 28, 0.62);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.rank-labels,
+.file-labels {
+  color: #53604c;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.rank-labels {
+  display: grid;
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  align-items: center;
+  justify-items: end;
+  padding: 8px 0;
+}
+
+.file-labels {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  justify-items: center;
+  padding-top: 8px;
 }
 
 dialog {
@@ -175,13 +232,22 @@ dialog h2 {
 
 @media (max-width: 620px) {
   .app {
-    padding: 12px;
+    padding: 12px 10px;
     place-items: start center;
   }
 
+  .game-shell {
+    width: 100%;
+  }
+
   .topbar {
+    width: 100%;
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  h1 {
+    font-size: 1.45rem;
   }
 
   .actions {
@@ -190,5 +256,25 @@ dialog h2 {
 
   .actions button {
     flex: 1;
+  }
+
+  .play-area {
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 5px;
+    width: 100%;
+  }
+
+  .board {
+    border-width: 5px;
+    border-radius: 6px;
+  }
+
+  .coord {
+    display: none;
+  }
+
+  .rank-labels,
+  .file-labels {
+    font-size: 0.68rem;
   }
 }

@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chess Game</title>
-    <link rel="stylesheet" href="styles.css?v=cecf7c4">
+    <link rel="stylesheet" href="styles.css?v=ui-polish-1">
   </head>
   <body>
     <main class="app">
       <section class="game-shell" aria-label="Chess game">
         <div class="topbar">
-          <div>
+          <div class="title-block">
             <h1>Chess Game</h1>
             <p id="statusText">White to move</p>
           </div>
@@ -20,8 +20,18 @@
           </div>
         </div>
 
-        <div class="board-wrap">
-          <div id="board" class="board" aria-label="Chess board"></div>
+        <div class="play-area">
+          <div class="rank-labels" aria-hidden="true">
+            <span>8</span><span>7</span><span>6</span><span>5</span>
+            <span>4</span><span>3</span><span>2</span><span>1</span>
+          </div>
+          <div>
+            <div id="board" class="board" aria-label="Chess board"></div>
+            <div class="file-labels" aria-hidden="true">
+              <span>A</span><span>B</span><span>C</span><span>D</span>
+              <span>E</span><span>F</span><span>G</span><span>H</span>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -46,6 +56,6 @@
       </form>
     </dialog>
 
-    <script src="app.js?v=cecf7c4"></script>
+    <script src="app.js?v=ui-polish-1"></script>
   </body>
 </html>
