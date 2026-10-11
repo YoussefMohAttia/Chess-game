@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chess Game</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app">
+      <section class="game-shell" aria-label="Chess game">
+        <div class="topbar">
+          <div>
+            <h1>Chess Game</h1>
+            <p id="statusText">White to move</p>
+          </div>
+          <div class="actions">
+            <button id="undoButton" type="button">Undo</button>
+            <button id="newGameButton" type="button">New game</button>
+          </div>
+        </div>
+
+        <div class="board-wrap">
+          <div id="board" class="board" aria-label="Chess board"></div>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="promotionDialog" class="promotion-dialog">
+      <form method="dialog">
+        <h2>Choose promotion</h2>
+        <div class="promotion-options">
+          <button value="Queen" type="submit">Queen</button>
+          <button value="Rook" type="submit">Rook</button>
+          <button value="Bishop" type="submit">Bishop</button>
+          <button value="Knight" type="submit">Knight</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="gameEndedDialog" class="game-ended-dialog">
+      <form method="dialog">
+        <h2 id="gameEndedTitle">Game ended</h2>
+        <p id="gameEndedText"></p>
+        <button type="submit">OK</button>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
